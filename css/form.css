@@ -1,0 +1,79 @@
+.hidden,
+.error_msg,
+.error_i10e {    /* ロード時に非表示のもの */
+    display:none;
+}
+
+.error_msg,
+.error_i10e {
+    color:red;
+}
+
+.error {    /* input */
+    border-color: red;
+    background-color: #faa;
+}
+
+.required {
+    color:red;
+}
+
+.gray {
+    color: gray;
+}
+
+.sizes input {
+    width: 4em;
+}
+
+.clickable {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+/* 確認画面 */
+.confirm_item,
+.confirm_size p,
+.p3_ui {
+    clear:left;
+}
+.confirm_item div {
+    float:left;
+}
+.confirm_item .name,
+.p3 .item .name {
+    font-weight:bold;
+}
+
+/* for magnific-popup inline popup */
+.white-popup {
+    position: relative;
+    background: #FFF;
+    padding: 20px;
+    width: auto;
+    max-width: 500px;
+    margin: 20px auto;
+}
+
+.color_sample {
+    display:block;
+    height:1em;
+    width:2em;
+    border:thin solid black;
+}
+
+.sc-1 {background-color: #fff;}
+.sc-2 {background-color: #fdfcf1;}
+.sc-3 {background-color: #e2d2a4;}
+.sc-4 {background-color: #956c35;}
+.sc-5 {background-color: #995f34;}
+.sc-6 {background-color: #62352b;}
+.sc-7 {background-color: #892f32;}
+.sc-8 {background-color: #322b28;}
+.sc-9 {background-color: #232525;}
+
+
+
+.confirm_size .item {
+    float:left;
+}

@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang='ja'>
+
+<head>
+    <meta charset='utf-8'>
+    <title>メールフォーム</title>
+    <meta content='IE=edge' http-equiv='X-UA-Compatible'>
+    <meta content='width=device-width, initial-scale=1' name='viewport'>
+    <!-- reset -->
+    <link href='css/reboot.css' rel='stylesheet'>
+    <link href='css/magnific-popup.css' rel='stylesheet'>
+    <link href='css/form.css' rel='stylesheet'>
+    <script src='js/jquery-3.3.1.min.js'></script>
+    <script src='js/jquery.magnific-popu.js'></script>
+    <script src='js/form.js'></script>
+</head>
+
+<body>
+    <div class='container'>
+        <h1>お問い合わせフォーム</h1>
+        <aside>
+            <!-- Page1: JS無効の場合に表示されます. -->
+            <section class='p1'>
+                <p>ウェブブラウザのJavaScriptを有効にしてください。</p>
+            </section>
+        </aside>
+        <main>
+            <form enctype='multipart/form-data' id='f1' method='post' name='f1'>
+                <!-- Page2: 最初の画面 フォームとエラーの表示 -->
+                <!-- 実装時 .hidden -->
+                <section class='p2 hidden'>
+                    <section class='i01'>
+                        <h2>
+                            基本情報
+                            <span class='required'>(必須)</span>
+                        </h2>
+                        <div class='i01'>
+                            <label for='i01'>貴社名</label>
+                            <input id='i01' name='i01' placeholder='' type='text'>
+                            <div class='error_msg'>入力必須項目です。</div>
+                        </div>
+                        <div class='i02'>
+                            <label for='i02'>部署名</label>
+                            <input id='i02' name='i02' placeholder='' type='text'>
+                            <div class='error_msg'>入力必須項目です。</div>
+                        </div>
+                        <div class='i03'>
+                            <label for='i03'>名前</label>
+                            <input autocomplete='name' id='i03' name='i03' placeholder='' type='text'>
+                            <div class='error_msg'>入力必須項目です。</div>
+                        </div>
+                        <div class='i04'>
+                            <label for='i04'>郵便番号〒</label>
+                            <input autocomplete='postal-code' id='i04' name='i04' placeholder='000-0000' type='text'>
+                            <div class='error_msg'>入力必須項目です。</div>
+                        </div>
+                        <div class='i05'>
+                            <label for='i05'>住所</label>
+                            <input id='i05' name='i05' placeholder='' type='text'>
+                            <div class='error_msg'>入力必須項目です。</div>
+                        </div>
+                        <div class='i06'>
+                            <label for='i06'>TEL</label>
+                            <input id='i06' name='i06' placeholder='' type='tel'>
+                            <div class='error_msg'>入力必須項目です。</div>
+                        </div>
+                        <div class='i07'>
+                            <label for='i07'>メールアドレス</label>
+                            <input autocomplete='email' id='i07' name='i07' placeholder='' type='email'>
+                            <div class='error_msg'>メールアドレスを入力してください。</div>
+                        </div>
+                    </section>
+                    <section class='i08'>
+                        <h2>
+                            ご依頼内容
+                            <span class='required'>(必須)</span>
+                        </h2>
+                        <div class='i08'>
+                            <label>
+                                <input id='i08_1' name='i08' type='radio' value='e'>
+                                見積もり依頼
+                            </label>
+                            <label>
+                                <input id='i08_2' name='i08' type='radio' value='i'>
+                                問い合わせ
+                            </label>
+                            <div class='error_msg'>入力必須項目です。</div>
+                        </div>
+                    </section>
+                    <section class='i09'>
+                        <h2>
+                            座面取り外し
+                            <span class='required'>(見積もり依頼の場合は必須)</span>
+                        </h2>
+                        <div class='i09'>
+                            <label>
+                                <input id='i09_1' name='i09' type='radio' value='1'>
+                                可能
+                            </label>
+                            <label>
+                                <input id='i09_2' name='i09' type='radio' value='0'>
+                                不可
+                            </label>
+                            <div class='error_msg'>入力必須項目です。</div>
+                            <div class='i09_2 hidden'>
+                                張替での対応になります。
+                            </div>
+                        </div>
+                    </section>
+                    <section class='i10'>
+                        <h2>
+                            座面カラー
+                            <!-- 見積もり依頼かつ取り外し可(i09==1)では必須・取り外し不可や問い合わせの場合は不要 -->
+                        </h2>
+                        <p>
+                            <label>
+                                <input id='i10_1' name='i10' type='radio' value='p'>
+                                <span>レザー郵送</span>
+                                <!-- 削除: span.required -->
+                            </label>
+                        </p>
+                        <p>
+                            <label>
+                                <input id='i10_2' name='i10' type='radio' value='s'>
+                                <span class='js_popup'>サンプルから選択</span>
+                            </label>
+                        </p>
+                        <!-- ポップアップで選択した色の表示名が #sample_color に表示される -->
+                        <p>
+                            <span id='sample_color'>SC-1</span>
+                            カラー
+                        </p>
+                        <p>
+                            <label>
+                                <input id='i10_3' name='i10' type='radio' value='e'>
+                                <span>その他 (2回目以降ご注文の方はこちらへ)</span>
+                            </label>
+                        </p>
+                        <div class='error_msg'>入力必須項目です。</div>
+                        <div class='error_i10e'>
+                            <!-- 見積もりご依頼の場合、レザー郵送を選択してください. -->
+                        </div>
+                    </section>
+                    <section class='white-popup mfp-hide' id='color_popup'>
+                        <h3>ソファカバーレザーサンプル</h3>
+                        <p class='required'>色見本から選択してください。</p>
+                        <label>
+                            <input id='c1' name='i10_sc' type='radio' value='SC-1'>
+                            <div class='sc-1 color_sample'>SC-1</div>
+                        </label>
+                        <label>
+                            <input id='c2' name='i10_sc' type='radio' value='SC-2'>
+                            <div class='sc-2 color_sample'>SC-2</div>
+                        </label>
+                        <label>
+                            <input id='c3' name='i10_sc' type='radio' value='SC-3'>
+                            <div class='sc-3 color_sample'>SC-3</div>
+                        </label>
+                        <label>
+                            <input id='c4' name='i10_sc' type='radio' value='SC-4'>
+                            <div class='sc-4 color_sample'>SC-4</div>
+                        </label>
+                        <label>
+                            <input id='c5' name='i10_sc' type='radio' value='SC-5'>
+                            <div class='sc-5 color_sample'>SC-5</div>
+                        </label>
+                        <label>
+                            <input id='c6' name='i10_sc' type='radio' value='SC-6'>
+                            <div class='sc-6 color_sample'>SC-6</div>
+                        </label>
+                        <label>
+                            <input id='c7' name='i10_sc' type='radio' value='SC-7'>
+                            <div class='sc-7 color_sample'>SC-7</div>
+                        </label>
+                        <label>
+                            <input id='c8' name='i10_sc' type='radio' value='SC-8'>
+                            <div class='sc-8 color_sample'>SC-8</div>
+                        </label>
+                        <label>
+                            <input id='c9' name='i10_sc' type='radio' value='SC-9'>
+                            <div class='sc-9 color_sample'>SC-9</div>
+                        </label>
+                    </section>
+                    <section class='i11'>
+                        <!-- i10==e の場合、このsectionは非表示 -->
+                        <h2>
+                            写真添付欄
+                            <span class='gray'>(座面全体・裏面2パターン)</span>
+                        </h2>
+                        <div class='i11_1'>
+                            <label>
+                                <input id='i11_1' name='i11_1' type='file'>
+                                添付ファイル
+                                <div class='error_msg'>入力必須項目です。</div>
+                            </label>
+                        </div>
+                        <div class='i11_2'>
+                            <label>
+                                <input id='i11_2' name='i11_2' type='file'>
+                                添付ファイル
+                                <div class='error_msg'>入力必須項目です。</div>
+                            </label>
+                        </div>
+                    </section>
+                    <section class='i12'>
+                        <h2>
+                            備考欄
+                            <span class='gray'>(張替え希望、２回目以降のご注文の際はこちらに記入してくだい)</span>
+                        </h2>
+                        <div class='i12'>
+                            <!-- label -->
+                            <textarea id='i12' name='i12'></textarea>
+                        </div>
+                    </section>
+                    <!-- 1-2 -->
+                    <h2>1-2</h2>
+                    <h2>
+                        実測寸法、必要枚数記入欄
+                        <span class='required'>（見積もり依頼時必須）</span>
+                    </h2>
+                    <p>
+                        <span class='show_saisun clickable'>採寸方法を参照</span>
+                        いただきご記入ください
+                    </p>
+                    <section class='saisun hidden'>
+                        <h2>採寸方法</h2>
+                        <p>座面の形状寸法を測って下さい。</p>
+                        <p class='required'>TODO:図</p>
+                        <h3>修理対象のソファのタイプを確認</h3>
+                        <p>フラットタイプか前垂れタイプかの確認をお願い致します。</p>
+                        <p>※座面がはずせないタイプのソファーは座面カバーでは対応できません。</p>
+                        <h3>サイズと必要な枚数を記入</h3>
+                        <p>サイズの異なる座面が複数あった場合は、そのタイプごとに寸法記入をお願い致します。</p>
+                        <p>寸法記入はmm(ミリ)表示でお願いします。</p>
+                    </section>
+                    <div class='sizes'>
+                        <div class='s1'>
+                            <span class='s1_1'>
+                                <label for='s1_1'>座面タイプ</label>
+                                <select id='s1_1' name='s1_1'>
+                                    <option value=''>選択</option>
+                                    <option value='1'>フラット</option>
+                                    <option value='2'>前垂れ</option>
+                                </select>
+                                <div class='error_msg'>入力必須項目です。</div>
+                            </span>
+                            <span class='s1_2'>
+                                <label for='s1_2'>A</label>
+                                <input id='s1_2' min='0' name='s1_2' placeholder='' type='number'>
+                                mm
+                            </span>
+                            <span class='s1_3'>
+                                <label for='s1_3'>B</label>
+                                <input id='s1_3' min='0' name='s1_3' placeholder='' type='number'>
+                                mm
+                            </span>
+                            <span class='s1_4'>
+                                <label for='s1_4'>C</label>
+                                <input id='s1_4' min='0' name='s1_4' placeholder='' type='number'>
+                                mm
+                            </span>
+                            <span class='s1_5'>
+                                <label for='s1_5'>D</label>
+                                <input id='s1_5' min='0' name='s1_5' placeholder='' type='number'>
+                                mm
+                            </span>
+                            <span class='s1_6'>
+                                <label for='s1_6'>E</label>
+                                <input id='s1_6' min='0' name='s1_6' placeholder='' type='number'>
+                                mm
+                            </span>
+                            <span class='s1_7'>
+                                <label for='s1_7'>F</label>
+                                <input id='s1_7' min='0' name='s1_7' placeholder='' type='number'>
+                                mm
+                            </span>
+                            <span class='s1_8'>
+                                <label for='s1_8'>枚数</label>
+                                <input id='s1_8' min='0' name='s1_8' placeholder='' type='number'>
+                                枚
+                            </span>
+                            <div class='error_msg'>入力必須項目です。</div>
+                        </div>
+                        <div class='s2'>
+                            <span class='s2_1'>
+                                <label for='s2_1'>座面タイプ</label>
+                                <select id='s2_1' name='s2_1'>
+                                    <option value=''>選択</option>
+                                    <option value='1'>フラット</option>
+                                    <option value='2'>前垂れ</option>
+                                </select>
+                            </span>
+                            <span class='s2_2'>
+                                <label for='s2_2'>A</label>
+                                <input id='s2_2' min='0' name='s2_2' placeholder='' type='number'>
+                                mm
+                            </span>
+                            <span class='s2_3'>
+                                <label for='s2_3'>B</label>
+                                <input id='s2_3' min='0' name='s2_3' placeholder='' type='number'>
+                                mm
+                            </span>
+                            <span class='s2_4'>
+                                <label for='s2_4'>C</label>
+                                <input id='s2_4' min='0' name='s2_4' placeholder='' type='number'>
+                                mm
+                            </span>
+                            <span class='s2_5'>
+                                <label for='s2_5'>D</label>
+                                <input id='s2_5' min='0' name='s2_5' placeholder='' type='number'>
+                                mm
+                            </span>
+                            <span class='s2_6'>
+                                <label for='s2_6'>E</label>
+                                <input id='s2_6' min='0' name='s2_6' placeholder='' type='number'>
+                                mm
+                            </span>
+                            <span class='s2_7'>
+                                <label for='s2_7'>F</label>
+                                <input id='s2_7' min='0' name='s2_7' placeholder='' type='number'>
+                                mm
+                            </span>
+                            <span class='s2_8'>
+                                <label for='s2_8'>枚数</label>
+                                <input id='s2_8' min='0' name='s2_8' placeholder='' type='number'>
+                                枚
+                            </span>
+                        </div>
+                        <div class='s3'>
+                            <span class='s3_1'>
+                                <label for='s3_1'>座面タイプ</label>
+                                <select id='s3_1' name='s3_1'>
+                                    <option value=''>選択</option>
+                                    <option value='1'>フラット</option>
+                                    <option value='2'>前垂れ</option>
+                                </select>
+                            </span>
+                            <span class='s3_2'>
+                                <label for='s3_2'>A</label>
+                                <input id='s3_2' min='0' name='s3_2' placeholder='' type='number'>
+                                mm
+                            </span>
+                            <span class='s3_3'>
+                                <label for='s3_3'>B</label>
+                                <input id='s3_3' min='0' name='s3_3' placeholder='' type='number'>
+                                mm
+                            </span>
+                            <span class='s3_4'>
+                                <label for='s3_4'>C</label>
+                                <input id='s3_4' min='0' name='s3_4' placeholder='' type='number'>
+                                mm
+                            </span>
+                            <span class='s3_5'>
+                                <label for='s3_5'>D</label>
+                                <input id='s3_5' min='0' name='s3_5' placeholder='' type='number'>
+                                mm
+                            </span>
+                            <span class='s3_6'>
+                                <label for='s3_6'>E</label>
+                                <input id='s3_6' min='0' name='s3_6' placeholder='' type='number'>
+                                mm
+                            </span>
+                            <span class='s3_7'>
+                                <label for='s3_7'>F</label>
+                                <input id='s3_7' min='0' name='s3_7' placeholder='' type='number'>
+                                mm
+                            </span>
+                            <span class='s3_8'>
+                                <label for='s3_8'>枚数</label>
+                                <input id='s3_8' min='0' name='s3_8' placeholder='' type='number'>
+                                枚
+                            </span>
+                        </div>
+                        <div class='s4'>
+                            <span class='s4_1'>
+                                <label for='s4_1'>座面タイプ</label>
+                                <select id='s4_1' name='s4_1'>
+                                    <option value=''>選択</option>
+                                    <option value='1'>フラット</option>
+                                    <option value='2'>前垂れ</option>
+                                </select>
+                            </span>
+                            <span class='s4_2'>
+                                <label for='s4_2'>A</label>
+                                <input id='s4_2' min='0' name='s4_2' placeholder='' type='number'>
+                                mm
+                            </span>
+                            <span class='s4_3'>
+                                <label for='s4_3'>B</label>
+                                <input id='s4_3' min='0' name='s4_3' placeholder='' type='number'>
+                                mm
+                            </span>
+                            <span class='s4_4'>
+                                <label for='s4_4'>C</label>
+                                <input id='s4_4' min='0' name='s4_4' placeholder='' type='number'>
+                                mm
+                            </span>
+                            <span class='s4_5'>
+                                <label for='s4_5'>D</label>
+                                <input id='s4_5' min='0' name='s4_5' placeholder='' type='number'>
+                                mm
+                            </span>
+                            <span class='s4_6'>
+                                <label for='s4_6'>E</label>
+                                <input id='s4_6' min='0' name='s4_6' placeholder='' type='number'>
+                                mm
+                            </span>
+                            <span class='s4_7'>
+                                <label for='s4_7'>F</label>
+                                <input id='s4_7' min='0' name='s4_7' placeholder='' type='number'>
+                                mm
+                            </span>
+                            <span class='s4_8'>
+                                <label for='s4_8'>枚数</label>
+                                <input id='s4_8' min='0' name='s4_8' placeholder='' type='number'>
+                                枚
+                            </span>
+                        </div>
+                        <div class='s5'>
+                            <span class='s5_1'>
+                                <label for='s5_1'>座面タイプ</label>
+                                <select id='s5_1' name='s5_1'>
+                                    <option value=''>選択</option>
+                                    <option value='1'>フラット</option>
+                                    <option value='2'>前垂れ</option>
+                                </select>
+                            </span>
+                            <span class='s5_2'>
+                                <label for='s5_2'>A</label>
+                                <input id='s5_2' min='0' name='s5_2' placeholder='' type='number'>
+                                mm
+                            </span>
+                            <span class='s5_3'>
+                                <label for='s5_3'>B</label>
+                                <input id='s5_3' min='0' name='s5_3' placeholder='' type='number'>
+                                mm
+                            </span>
+                            <span class='s5_4'>
+                                <label for='s5_4'>C</label>
+                                <input id='s5_4' min='0' name='s5_4' placeholder='' type='number'>
+                                mm
+                            </span>
+                            <span class='s5_5'>
+                                <label for='s5_5'>D</label>
+                                <input id='s5_5' min='0' name='s5_5' placeholder='' type='number'>
+                                mm
+                            </span>
+                            <span class='s5_6'>
+                                <label for='s5_6'>E</label>
+                                <input id='s5_6' min='0' name='s5_6' placeholder='' type='number'>
+                                mm
+                            </span>
+                            <span class='s5_7'>
+                                <label for='s5_7'>F</label>
+                                <input id='s5_7' min='0' name='s5_7' placeholder='' type='number'>
+                                mm
+                            </span>
+                            <span class='s5_8'>
+                                <label for='s5_8'>枚数</label>
+                                <input id='s5_8' min='0' name='s5_8' placeholder='' type='number'>
+                                枚
+                            </span>
+                        </div>
+                    </div>
+                    <section class='i15'>
+                        <h2>
+                            納品先住所
+                            <span class='required'>（見積もり依頼時必須）</span>
+                        </h2>
+                        <!-- i13, i14 は欠番 -->
+                        <div class='i15'>
+                            <label for='i15'>店舗名</label>
+                            <input id='i15' name='i15' placeholder='' type='text'>
+                            <div class='error_msg'>入力必須項目です。</div>
+                        </div>
+                        <div class='i16'>
+                            <label for='i16'>店舗担当者名</label>
+                            <input id='i16' name='i16' placeholder='' type='text'>
+                            <div class='error_msg'>入力必須項目です。</div>
+                        </div>
+                        <div class='i17'>
+                            <label for='i17'>郵便番号</label>
+                            <input autocomplete='postal-code' id='i17' name='i17' placeholder='' type='text'>
+                            <div class='error_msg'>入力必須項目です。</div>
+                        </div>
+                        <div class='i18'>
+                            <label for='i18'>住所</label>
+                            <input id='i18' name='i18' placeholder='' type='text'>
+                            <div class='error_msg'>入力必須項目です。</div>
+                        </div>
+                        <div class='i19'>
+                            <label for='i19'>TEL</label>
+                            <input id='i19' name='i19' placeholder='' type='tel'>
+                            <div class='error_msg'>入力必須項目です。</div>
+                        </div>
+                    </section>
+                    <div class='p2_ui'>
+                        <input class='to_confirm' type='button' value='送信内容の確認'>
+                    </div>
+                </section>
+                <!-- Page 3: 確認画面 -->
+                <section class='p3 hidden'>
+                    <section>
+                        <h2>送信内容の確認</h2>
+                        <div class='confirm_item'>
+                            <div class='name'>貴社名</div>
+                            <div class='value c01'>入力値を表示</div>
+                        </div>
+                        <div class='confirm_item'>
+                            <div class='name'>部署名</div>
+                            <div class='value c02'>入力値を表示</div>
+                        </div>
+                        <div class='confirm_item'>
+                            <div class='name'>名前</div>
+                            <div class='value c03'>入力値を表示</div>
+                        </div>
+                        <div class='confirm_item'>
+                            <div class='name'>郵便番号〒</div>
+                            <div class='value c04'>入力値を表示</div>
+                        </div>
+                        <div class='confirm_item'>
+                            <div class='name'>住所</div>
+                            <div class='value c05'>入力値を表示</div>
+                        </div>
+                        <div class='confirm_item'>
+                            <div class='name'>TEL</div>
+                            <div class='value c06'>入力値を表示</div>
+                        </div>
+                        <div class='confirm_item'>
+                            <div class='name'>メールアドレス</div>
+                            <div class='value c07'>入力値を表示</div>
+                        </div>
+                        <div class='confirm_item'>
+                            <div class='name'>ご依頼内容</div>
+                            <div class='value c08'>選択値を表示</div>
+                        </div>
+                        <div class='confirm_item'>
+                            <div class='name'>座面取り外し</div>
+                            <div class='value c09'>選択値を表示</div>
+                        </div>
+                        <div class='confirm_item'>
+                            <div class='name'>カラー</div>
+                            <div class='value c10'>選択値を表示</div>
+                        </div>
+                        <div class='confirm_item'>
+                            <div class='name'>カラー(選択)</div>
+                            <div class='value c10_sc'>選択値を表示</div>
+                        </div>
+                        <!--
+<div class='confirm_item'>
+<div class='name'>添付ファイル1</div>
+<div class='value c11_1'>入力値を表示</div>
+</div>
+<div class='confirm_item'>
+<div class='name'>添付ファイル2</div>
+<div class='value c11_2'>入力値を表示</div>
+</div>
+<div class='confirm_item'>
+<div class='name'>添付ファイル3</div>
+<div class='value c11_3'>入力値を表示</div>
+</div>
+-->
+                        <div class='confirm_item'>
+                            <div class='name'>備考欄</div>
+                            <div class='value c12'>入力値を表示</div>
+                        </div>
+                        <div class='confirm_size'>
+                            <p>
+                                採寸1
+                            </p>
+                            <div class='item'>
+                                <div class='name'>タイプ</div>
+                                <div class='value s1_1'>寸法</div>
+                            </div>
+                            <div class='item'>
+                                <div class='name'>A</div>
+                                <div class='value s1_2'>寸法</div>
+                            </div>
+                            <div class='item'>
+                                <div class='name'>B</div>
+                                <div class='value s1_3'>寸法</div>
+                            </div>
+                            <div class='item'>
+                                <div class='name'>C</div>
+                                <div class='value s1_4'>寸法</div>
+                            </div>
+                            <div class='item'>
+                                <div class='name'>D</div>
+                                <div class='value s1_5'>寸法</div>
+                            </div>
+                            <div class='item'>
+                                <div class='name'>E</div>
+                                <div class='value s1_6'>寸法</div>
+                            </div>
+                            <div class='item'>
+                                <div class='name'>F</div>
+                                <div class='value s1_7'>寸法</div>
+                            </div>
+                            <div class='item'>
+                                <div class='name'>枚数</div>
+                                <div class='value s1_8'>寸法</div>
+                            </div>
+                        </div>
+                        <div class='confirm_size'>
+                            <p>
+                                採寸2
+                            </p>
+                            <div class='item'>
+                                <div class='name'>タイプ</div>
+                                <div class='value s2_1'>寸法</div>
+                            </div>
+                            <div class='item'>
+                                <div class='name'>A</div>
+                                <div class='value s2_2'>寸法</div>
+                            </div>
+                            <div class='item'>
+                                <div class='name'>B</div>
+                                <div class='value s2_3'>寸法</div>
+                            </div>
+                            <div class='item'>
+                                <div class='name'>C</div>
+                                <div class='value s2_4'>寸法</div>
+                            </div>
+                            <div class='item'>
+                                <div class='name'>D</div>
+                                <div class='value s2_5'>寸法</div>
+                            </div>
+                            <div class='item'>
+                                <div class='name'>E</div>
+                                <div class='value s2_6'>寸法</div>
+                            </div>
+                            <div class='item'>
+                                <div class='name'>F</div>
+                                <div class='value s2_7'>寸法</div>
+                            </div>
+                            <div class='item'>
+                                <div class='name'>枚数</div>
+                                <div class='value s2_8'>寸法</div>
+                            </div>
+                        </div>
+                        <div class='confirm_size'>
+                            <p>
+                                採寸3
+                            </p>
+                            <div class='item'>
+                                <div class='name'>タイプ</div>
+                                <div class='value s3_1'>寸法</div>
+                            </div>
+                            <div class='item'>
+                                <div class='name'>A</div>
+                                <div class='value s3_2'>寸法</div>
+                            </div>
+                            <div class='item'>
+                                <div class='name'>B</div>
+                                <div class='value s3_3'>寸法</div>
+                            </div>
+                            <div class='item'>
+                                <div class='name'>C</div>
+                                <div class='value s3_4'>寸法</div>
+                            </div>
+                            <div class='item'>
+                                <div class='name'>D</div>
+                                <div class='value s3_5'>寸法</div>
+                            </div>
+                            <div class='item'>
+                                <div class='name'>E</div>
+                                <div class='value s3_6'>寸法</div>
+                            </div>
+                            <div class='item'>
+                                <div class='name'>F</div>
+                                <div class='value s3_7'>寸法</div>
+                            </div>
+                            <div class='item'>
+                                <div class='name'>枚数</div>
+                                <div class='value s3_8'>寸法</div>
+                            </div>
+                        </div>
+                        <div class='confirm_size'>
+                            <p>
+                                採寸4
+                            </p>
+                            <div class='item'>
+                                <div class='name'>タイプ</div>
+                                <div class='value s4_1'>寸法</div>
+                            </div>
+                            <div class='item'>
+                                <div class='name'>A</div>
+                                <div class='value s4_2'>寸法</div>
+                            </div>
+                            <div class='item'>
+                                <div class='name'>B</div>
+                                <div class='value s4_3'>寸法</div>
+                            </div>
+                            <div class='item'>
+                                <div class='name'>C</div>
+                                <div class='value s4_4'>寸法</div>
+                            </div>
+                            <div class='item'>
+                                <div class='name'>D</div>
+                                <div class='value s4_5'>寸法</div>
+                            </div>
+                            <div class='item'>
+                                <div class='name'>E</div>
+                                <div class='value s4_6'>寸法</div>
+                            </div>
+                            <div class='item'>
+                                <div class='name'>F</div>
+                                <div class='value s4_7'>寸法</div>
+                            </div>
+                            <div class='item'>
+                                <div class='name'>枚数</div>
+                                <div class='value s4_8'>寸法</div>
+                            </div>
+                        </div>
+                        <div class='confirm_size'>
+                            <p>
+                                採寸5
+                            </p>
+                            <div class='item'>
+                                <div class='name'>タイプ</div>
+                                <div class='value s5_1'>寸法</div>
+                            </div>
+                            <div class='item'>
+                                <div class='name'>A</div>
+                                <div class='value s5_2'>寸法</div>
+                            </div>
+                            <div class='item'>
+                                <div class='name'>B</div>
+                                <div class='value s5_3'>寸法</div>
+                            </div>
+                            <div class='item'>
+                                <div class='name'>C</div>
+                                <div class='value s5_4'>寸法</div>
+                            </div>
+                            <div class='item'>
+                                <div class='name'>D</div>
+                                <div class='value s5_5'>寸法</div>
+                            </div>
+                            <div class='item'>
+                                <div class='name'>E</div>
+                                <div class='value s5_6'>寸法</div>
+                            </div>
+                            <div class='item'>
+                                <div class='name'>F</div>
+                                <div class='value s5_7'>寸法</div>
+                            </div>
+                            <div class='item'>
+                                <div class='name'>枚数</div>
+                                <div class='value s5_8'>寸法</div>
+                            </div>
+                        </div>
+                        <div class='confirm_item'>
+                            <div class='name'>店舗名</div>
+                            <div class='value c15'>選択値を表示</div>
+                        </div>
+                        <div class='confirm_item'>
+                            <div class='name'>店舗担当者名</div>
+                            <div class='value c16'>選択値を表示</div>
+                        </div>
+                        <div class='confirm_item'>
+                            <div class='name'>郵便番号</div>
+                            <div class='value c17'>選択値を表示</div>
+                        </div>
+                        <div class='confirm_item'>
+                            <div class='name'>住所</div>
+                            <div class='value c18'>選択値を表示</div>
+                        </div>
+                        <div class='confirm_item'>
+                            <div class='name'>TEL</div>
+                            <div class='value c19'>選択値を表示</div>
+                        </div>
+                    </section>
+                    <div class='p3_ui'>
+                        <input class='to_form' type='button' value='訂正'>
+                        <input class='entry' type='button' value='送信'>
+                    </div>
+                </section>
+                <!-- Page 4: 完了画面 -->
+                <section class='p4 hidden'>
+                    <h2>送信完了</h2>
+                    <p>ご利用ありがとうございます。</p>
+                    <p>確認メールを送信しました。メールが届かない場合は、入力メールアドレスが正しいか、@adtempo-networks.co.jp からのメールをブロックしていないかご確認ください。</p>
+                    <p>後日、担当者よりご連絡させていただきます。</p>
+                    <div class='return'>
+                        <a href='/html'>トップページに戻る</a>
+                    </div>
+                </section>
+            </form>
+        </main>
+    </div>
+</body>
+
+</html>
